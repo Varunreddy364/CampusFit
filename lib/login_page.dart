@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'register_page.dart';
 
@@ -21,14 +22,37 @@ class LoginPage extends StatelessWidget {
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
             ),
+
             const SizedBox(height: 15),
+
             TextField(
               controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(labelText: "Password"),
             ),
+
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: () {}, child: const Text("Login")),
+
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Login Successful")),
+                  );
+                } on FirebaseAuthException catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(e.message ?? "Login Failed")),
+                  );
+                }
+              },
+              child: const Text("Login"),
+            ),
+
             TextButton(
               onPressed: () {
                 Navigator.push(
