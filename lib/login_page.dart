@@ -1,9 +1,8 @@
-import 'profile_page.dart';
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
+import 'profile_page.dart';
 import 'register_page.dart';
+import 'services/api_service.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -37,21 +36,23 @@ class LoginPage extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () async {
-                try {
-                  await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
+                final user = await ApiService.loginUser(
+                  emailController.text.trim(),
+                  passwordController.text.trim(),
+                );
+
+                if (user != null) {
+                  int userId = user["userID"];
 
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
+                      builder: (_) => ProfilePage(userId: userId),
                     ),
                   );
-                } on FirebaseAuthException catch (e) {
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(e.message ?? "Login Failed")),
+                    const SnackBar(content: Text("Invalid Email or Password")),
                   );
                 }
               },
