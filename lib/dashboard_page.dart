@@ -179,41 +179,6 @@ class DashboardPage extends StatelessWidget {
               const SizedBox(height: 25),
 
               const Text(
-                "Today's Summary",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 15),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildCard(
-                      "Calories Goal",
-                      "2000",
-                      Icons.local_fire_department,
-                    ),
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  Expanded(
-                    child: _buildCard(
-                      "Protein Goal",
-                      "120g",
-                      Icons.fitness_center,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              _buildCard("Target Weight", "70 kg", Icons.monitor_weight),
-
-              const SizedBox(height: 25),
-
-              const Text(
                 "Quick Actions",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),

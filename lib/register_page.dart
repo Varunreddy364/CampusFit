@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
 import 'services/api_service.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -81,6 +82,13 @@ class RegisterPage extends StatelessWidget {
                 if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Registration Successful")),
+                  );
+
+                  await Future.delayed(const Duration(seconds: 1));
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
