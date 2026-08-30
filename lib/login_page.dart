@@ -17,8 +17,8 @@ class LoginPage extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 207, 237, 208),
-              Color.fromARGB(255, 18, 16, 8),
+              Color.fromARGB(255, 211, 143, 184),
+              Color.fromARGB(255, 187, 224, 235),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
                         const Icon(
                           Icons.fitness_center,
                           size: 80,
-                          color: Colors.deepPurple,
+                          color: Color.fromARGB(255, 45, 20, 87),
                         ),
 
                         const SizedBox(height: 10),
@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
 
                         const Text(
                           "Fitness & Health Management",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Color.fromARGB(255, 8, 5, 5)),
                         ),
 
                         const SizedBox(height: 30),
@@ -96,7 +96,7 @@ class LoginPage extends StatelessWidget {
                           height: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple,
+                              backgroundColor: const Color.fromARGB(255, 94, 46, 176),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
