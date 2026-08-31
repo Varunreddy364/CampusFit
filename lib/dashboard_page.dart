@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'bmi_page.dart';
 import 'profile_page.dart';
 import 'view_profile_page.dart';
 import 'login_page.dart';
@@ -219,6 +220,17 @@ class DashboardPage extends StatelessWidget {
                     onPressed: () {},
                     icon: const Icon(Icons.fitness_center),
                     label: const Text("Workout Plan"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const BMIPage()),
+                      );
+                    },
+                    icon: const Icon(Icons.monitor_weight),
+                    label: const Text("BMI Calculator"),
                   ),
 
                   ElevatedButton.icon(
