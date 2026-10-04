@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'nutrition_page.dart';
 import 'bmi_page.dart';
 import 'profile_page.dart';
 import 'view_profile_page.dart';
@@ -233,10 +234,16 @@ class DashboardPage extends StatelessWidget {
                     label: const Text("BMI Calculator"),
                   ),
 
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.restaurant),
-                    label: const Text("Nutrition"),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NutritionPage(userId: userId),
+                        ),
+                      );
+                    },
+                    child: const Text("Nutrition Tracker"),
                   ),
                 ],
               ),

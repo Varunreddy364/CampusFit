@@ -78,4 +78,27 @@ class ApiService {
 
     return null;
   }
+
+  static Future<bool> addMeal(Map<String, dynamic> mealData) async {
+    final response = await http.post(
+      Uri.parse("http://10.0.2.2:8080/meal/add"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(mealData),
+    );
+
+    return response.statusCode == 200;
+  }
+
+  static Future<List<dynamic>> getTodaysMeals(int userId) async {
+    final response = await http.get(
+      Uri.parse("http://10.0.2.2:8080/meal/today/$userId"),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+
+    return [];
+  }
+
 }
