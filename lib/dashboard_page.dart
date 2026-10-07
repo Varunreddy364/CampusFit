@@ -5,6 +5,8 @@ import 'bmi_page.dart';
 import 'profile_page.dart';
 import 'view_profile_page.dart';
 import 'login_page.dart';
+import 'schedule_page.dart';
+import 'timetable_entry_page.dart';
 
 class DashboardPage extends StatelessWidget {
   final int userId;
@@ -244,6 +246,19 @@ class DashboardPage extends StatelessWidget {
                       );
                     },
                     child: const Text("Nutrition Tracker"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TimetableEntryPage(userId: userId),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.schedule),
+                    label: const Text("Adaptive Schedule"),
                   ),
                 ],
               ),

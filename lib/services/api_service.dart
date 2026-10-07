@@ -101,4 +101,75 @@ class ApiService {
     return [];
   }
 
+  static Future<List<dynamic>> getUserSchedule(int userId) async {
+    final response = await http.get(
+      Uri.parse("http://10.0.2.2:8080/schedule/user/$userId"),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+
+    return [];
+  }
+
+  static Future<bool> updateScheduleStatus(int itemId, String status) async {
+    final response = await http.put(
+      Uri.parse("http://10.0.2.2:8080/schedule/updateStatus/$itemId"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"status": status}),
+    );
+
+    return response.statusCode == 200;
+  }
+
+  // =========================
+  // ADAPTIVE PLANNING SYSTEM
+  // =========================
+
+  static Future<bool> addTimetableClass(Map<String, dynamic> classData) async {
+    final response = await http.post(
+      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/add"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(classData),
+    );
+    return response.statusCode == 200 || response.statusCode == 201;
+  }
+
+  static Future<bool> addAcademicTask(Map<String, dynamic> taskData) async {
+    final response = await http.post(
+      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/add"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(taskData),
+    );
+    return response.statusCode == 200 || response.statusCode == 201;
+  }
+
+  static Future<Map<String, dynamic>?> generateAdaptivePlan(int userId, String dayOfWeek) async {
+    final response = await http.get(
+      Uri.parse("http://10.0.2.2:8080/api/adaptive/plan/generate/$userId/$dayOfWeek"),
+    );
+
+    if (response.statusCode == 200 && response.body.isNotEmpty) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  static Future<List<dynamic>> getUserTimetable(int userId) async {
+    final response = await http.get(
+      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/$userId"),
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return [];
+  }
+
+  static Future<bool> deleteTimetableClass(int classId) async {
+    final response = await http.delete(
+      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/delete/$classId"),
+    );
+    return response.statusCode == 200;
+  }
 }
