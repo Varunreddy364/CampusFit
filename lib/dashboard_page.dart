@@ -5,8 +5,12 @@ import 'bmi_page.dart';
 import 'profile_page.dart';
 import 'view_profile_page.dart';
 import 'login_page.dart';
-import 'schedule_page.dart';
-import 'timetable_entry_page.dart';
+import 'feedback_page.dart';
+import 'academic_schedule_page.dart';
+import 'weekly_timetable_page.dart';
+import 'academic_tasks_page.dart';
+import 'study_plan_page.dart';
+import 'workout_plan_page.dart';
 
 class DashboardPage extends StatelessWidget {
   final int userId;
@@ -52,8 +56,9 @@ class DashboardPage extends StatelessWidget {
               accountEmail: const Text("CampusFit Member"),
             ),
 
+            // --- GENERAL ---
             ListTile(
-              leading: const Icon(Icons.home),
+              leading: const Icon(Icons.home_rounded, color: Colors.deepPurple),
               title: const Text("Dashboard"),
               onTap: () {
                 Navigator.pop(context);
@@ -61,7 +66,7 @@ class DashboardPage extends StatelessWidget {
             ),
 
             ListTile(
-              leading: const Icon(Icons.person),
+              leading: const Icon(Icons.person_rounded),
               title: const Text("Profile"),
               onTap: () {
                 Navigator.push(
@@ -74,7 +79,7 @@ class DashboardPage extends StatelessWidget {
             ),
 
             ListTile(
-              leading: const Icon(Icons.visibility),
+              leading: const Icon(Icons.visibility_rounded),
               title: const Text("View Profile"),
               onTap: () {
                 Navigator.push(
@@ -86,35 +91,120 @@ class DashboardPage extends StatelessWidget {
               },
             ),
 
+            const Divider(height: 24, thickness: 1),
+            _buildDrawerSectionHeader("ACADEMIC"),
+
             ListTile(
-              leading: const Icon(Icons.fitness_center),
+              leading: const Icon(Icons.table_chart_rounded),
+              title: const Text("Weekly Timetable"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WeeklyTimetablePage(userId: userId),
+                  ),
+                );
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.calendar_month_rounded),
+              title: const Text("Academic Schedule"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AcademicSchedulePage(userId: userId),
+                  ),
+                );
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.task_alt_rounded),
+              title: const Text("Academic Tasks"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AcademicTasksPage(userId: userId),
+                  ),
+                );
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.psychology_rounded),
+              title: const Text("Study Plan"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => StudyPlanPage(userId: userId),
+                  ),
+                );
+              },
+            ),
+
+            const Divider(height: 24, thickness: 1),
+            _buildDrawerSectionHeader("FITNESS & WELLNESS"),
+
+            ListTile(
+              leading: const Icon(Icons.fitness_center_rounded),
               title: const Text("Workout Plan"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WorkoutPlanPage(userId: userId),
+                  ),
+                );
+              },
             ),
 
             ListTile(
-              leading: const Icon(Icons.restaurant),
+              leading: const Icon(Icons.restaurant_rounded),
               title: const Text("Nutrition"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => NutritionPage(userId: userId),
+                  ),
+                );
+              },
             ),
 
             ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text("Health"),
-              onTap: () {},
+              leading: const Icon(Icons.monitor_heart_rounded),
+              title: const Text("Health & BMI"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BMIPage(userId: userId),
+                  ),
+                );
+              },
+            ),
+
+            const Divider(height: 24, thickness: 1),
+            _buildDrawerSectionHeader("ACCOUNT & FEEDBACK"),
+
+            ListTile(
+              leading: const Icon(Icons.feedback_rounded),
+              title: const Text("Feedback Experience"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => FeedbackPage(userId: userId)),
+                );
+              },
             ),
 
             ListTile(
-              leading: const Icon(Icons.feedback),
-              title: const Text("Feedback"),
-              onTap: () {},
-            ),
-
-            const Divider(),
-
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
+              leading: const Icon(Icons.logout_rounded, color: Colors.redAccent),
+              title: const Text("Logout", style: TextStyle(color: Colors.redAccent)),
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -220,7 +310,14 @@ class DashboardPage extends StatelessWidget {
                   ),
 
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => WorkoutPlanPage(userId: userId),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.fitness_center),
                     label: const Text("Workout Plan"),
                   ),
@@ -229,11 +326,11 @@ class DashboardPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const BMIPage()),
+                        MaterialPageRoute(builder: (_) => BMIPage(userId: userId)),
                       );
                     },
-                    icon: const Icon(Icons.monitor_weight),
-                    label: const Text("BMI Calculator"),
+                    icon: const Icon(Icons.monitor_heart),
+                    label: const Text("Health & BMI"),
                   ),
 
                   ElevatedButton(
@@ -248,17 +345,70 @@ class DashboardPage extends StatelessWidget {
                     child: const Text("Nutrition Tracker"),
                   ),
 
+
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => TimetableEntryPage(userId: userId),
+                          builder: (_) => FeedbackPage(userId: userId),
                         ),
                       );
                     },
-                    icon: const Icon(Icons.schedule),
-                    label: const Text("Adaptive Schedule"),
+                    icon: const Icon(Icons.star),
+                    label: const Text("Feedback Experience"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => WeeklyTimetablePage(userId: userId),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.table_chart),
+                    label: const Text("Weekly Timetable"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AcademicSchedulePage(userId: userId),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.calendar_month),
+                    label: const Text("Academic Schedule"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AcademicTasksPage(userId: userId),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.task_alt),
+                    label: const Text("Academic Tasks"),
+                  ),
+
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => StudyPlanPage(userId: userId),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.psychology),
+                    label: const Text("Study Plan"),
                   ),
                 ],
               ),
@@ -292,31 +442,17 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  static Widget _buildCard(String title, String value, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 3)),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(icon, size: 40, color: Colors.deepPurple),
-
-          const SizedBox(height: 10),
-
-          Text(title, textAlign: TextAlign.center),
-
-          const SizedBox(height: 5),
-
-          Text(
-            value,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-        ],
+  Widget _buildDrawerSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.1,
+          color: Colors.grey.shade500,
+        ),
       ),
     );
   }
