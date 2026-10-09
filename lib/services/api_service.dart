@@ -79,25 +79,80 @@ class ApiService {
     return null;
   }
 
+  // =========================
+  // MEAL & NUTRITION MODULE
+  // =========================
   static Future<bool> addMeal(Map<String, dynamic> mealData) async {
-    final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/meal/add"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(mealData),
-    );
-
-    return response.statusCode == 200;
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/meal/add"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(mealData),
+      );
+      return response.statusCode == 200 || response.statusCode == 201;
+    } catch (_) {
+      return false;
+    }
   }
 
   static Future<List<dynamic>> getTodaysMeals(int userId) async {
-    final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/meal/today/$userId"),
-    );
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/meal/today/$userId"),
+      );
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  static Future<bool> updateMeal(int mealId, Map<String, dynamic> mealData) async {
+    try {
+      final response = await http.put(
+        Uri.parse("$baseUrl/meal/update/$mealId"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(mealData),
+      );
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
     }
+  }
 
+  static Future<bool> deleteMeal(int mealId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse("$baseUrl/meal/$mealId"),
+      );
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<List<dynamic>> getWeeklyMeals(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/meal/weekly/$userId"),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  static Future<List<dynamic>> getUserMeals(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/meal/user/$userId"),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+    } catch (_) {}
     return [];
   }
 
@@ -245,6 +300,30 @@ class ApiService {
     } catch (_) {
       return false;
     }
+  }
+
+  static Future<List<dynamic>> getUserFeedback(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/feedback/user/$userId"),
+      );
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        final decoded = jsonDecode(response.body);
+        if (decoded is List) return decoded;
+      }
+    } catch (_) {}
+
+    try {
+      final fallbackUrl = baseUrl.contains("10.0.2.2")
+          ? "http://localhost:8080/api/feedback/user/$userId"
+          : "http://10.0.2.2:8080/api/feedback/user/$userId";
+      final response = await http.get(Uri.parse(fallbackUrl));
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        final decoded = jsonDecode(response.body);
+        if (decoded is List) return decoded;
+      }
+    } catch (_) {}
+    return [];
   }
 
   // =========================
@@ -455,6 +534,56 @@ class ApiService {
       return response.statusCode == 200;
     } catch (_) {
       return false;
+    }
+  }
+
+  static Future<Map<String, dynamic>> previewReplan(int userId, Map<String, dynamic> replanData) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/api/study-plan/replan/preview/$userId"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(replanData),
+      );
+
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        return {"success": true, "data": jsonDecode(response.body)};
+      } else {
+        String errorMsg = "Failed to preview replan";
+        try {
+          final decoded = jsonDecode(response.body);
+          if (decoded is Map && decoded.containsKey("error")) {
+            errorMsg = decoded["error"];
+          }
+        } catch (_) {}
+        return {"success": false, "error": errorMsg};
+      }
+    } catch (e) {
+      return {"success": false, "error": e.toString()};
+    }
+  }
+
+  static Future<Map<String, dynamic>> applyReplan(int userId, Map<String, dynamic> replanData) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$baseUrl/api/study-plan/replan/apply/$userId"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(replanData),
+      );
+
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+        return {"success": true, "data": jsonDecode(response.body)};
+      } else {
+        String errorMsg = "Failed to apply replan";
+        try {
+          final decoded = jsonDecode(response.body);
+          if (decoded is Map && decoded.containsKey("error")) {
+            errorMsg = decoded["error"];
+          }
+        } catch (_) {}
+        return {"success": false, "error": errorMsg};
+      }
+    } catch (e) {
+      return {"success": false, "error": e.toString()};
     }
   }
 
