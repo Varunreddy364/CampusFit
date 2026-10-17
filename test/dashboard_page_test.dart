@@ -80,7 +80,7 @@ void main() {
 
     // Find and tap the Water Intake card
     final waterCard = find.text('Water Intake');
-    expect(waterCard, findsOneWidget);33
+    expect(waterCard, findsOneWidget);
     await tester.tap(waterCard);
     await tester.pumpAndSettle();
 
