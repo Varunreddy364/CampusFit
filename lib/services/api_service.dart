@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
+  static const String baseUrl = "https://campusfit-backend-production.up.railway.app";
+
   // =========================
   // REGISTER USER
   // =========================
   static Future<bool> registerUser(Map<String, dynamic> userData) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/user/register"),
+      Uri.parse("$baseUrl/user/register"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(userData),
     );
@@ -24,7 +26,7 @@ class ApiService {
     String password,
   ) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/user/login"),
+      Uri.parse("$baseUrl/user/login"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
     );
@@ -41,7 +43,7 @@ class ApiService {
   // =========================
   static Future<Map<String, dynamic>?> getUser(int userId) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/user/$userId"),
+      Uri.parse("$baseUrl/user/$userId"),
     );
 
     if (response.statusCode == 200 && response.body.isNotEmpty) {
@@ -56,7 +58,7 @@ class ApiService {
   // =========================
   static Future<bool> saveProfile(Map<String, dynamic> profileData) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/fitness/save"),
+      Uri.parse("$baseUrl/fitness/save"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(profileData),
     );
@@ -69,7 +71,7 @@ class ApiService {
   // =========================
   static Future<Map<String, dynamic>?> getProfile(int userId) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/fitness/$userId"),
+      Uri.parse("$baseUrl/fitness/$userId"),
     );
 
     if (response.statusCode == 200 && response.body.isNotEmpty) {
@@ -158,7 +160,7 @@ class ApiService {
 
   static Future<List<dynamic>> getUserSchedule(int userId) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/schedule/user/$userId"),
+      Uri.parse("$baseUrl/schedule/user/$userId"),
     );
 
     if (response.statusCode == 200) {
@@ -170,7 +172,7 @@ class ApiService {
 
   static Future<bool> updateScheduleStatus(int itemId, String status) async {
     final response = await http.put(
-      Uri.parse("http://10.0.2.2:8080/schedule/updateStatus/$itemId"),
+      Uri.parse("$baseUrl/schedule/updateStatus/$itemId"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"status": status}),
     );
@@ -184,7 +186,7 @@ class ApiService {
 
   static Future<bool> addTimetableClass(Map<String, dynamic> classData) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/add"),
+      Uri.parse("$baseUrl/api/adaptive/timetable/add"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(classData),
     );
@@ -193,7 +195,7 @@ class ApiService {
 
   static Future<bool> addAcademicTask(Map<String, dynamic> taskData) async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/add"),
+      Uri.parse("$baseUrl/api/adaptive/academic-task/add"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(taskData),
     );
@@ -202,7 +204,7 @@ class ApiService {
 
   static Future<Map<String, dynamic>?> generateAdaptivePlan(int userId, String dayOfWeek) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/plan/generate/$userId/$dayOfWeek"),
+      Uri.parse("$baseUrl/api/adaptive/plan/generate/$userId/$dayOfWeek"),
     );
 
     if (response.statusCode == 200 && response.body.isNotEmpty) {
@@ -213,7 +215,7 @@ class ApiService {
 
   static Future<List<dynamic>> getUserTimetable(int userId) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/$userId"),
+      Uri.parse("$baseUrl/api/adaptive/timetable/$userId"),
     );
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -223,14 +225,14 @@ class ApiService {
 
   static Future<bool> deleteTimetableClass(int classId) async {
     final response = await http.delete(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/timetable/delete/$classId"),
+      Uri.parse("$baseUrl/api/adaptive/timetable/delete/$classId"),
     );
     return response.statusCode == 200;
   }
 
   static Future<List<dynamic>> getAcademicTasks(int userId) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/$userId"),
+      Uri.parse("$baseUrl/api/adaptive/academic-task/$userId"),
     );
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -240,7 +242,7 @@ class ApiService {
 
   static Future<bool> updateAcademicTaskProgress(int taskId, int minutesCompleted) async {
     final response = await http.put(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/progress/$taskId?minutesCompleted=$minutesCompleted"),
+      Uri.parse("$baseUrl/api/adaptive/academic-task/progress/$taskId?minutesCompleted=$minutesCompleted"),
     );
     return response.statusCode == 200;
   }
@@ -251,7 +253,7 @@ class ApiService {
 
   static Future<bool> updateAcademicTask(int taskId, Map<String, dynamic> updatedData) async {
     final response = await http.put(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/update/$taskId"),
+      Uri.parse("$baseUrl/api/adaptive/academic-task/update/$taskId"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(updatedData),
     );
@@ -260,14 +262,14 @@ class ApiService {
 
   static Future<bool> deleteAcademicTask(int taskId) async {
     final response = await http.delete(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/academic-task/delete/$taskId"),
+      Uri.parse("$baseUrl/api/adaptive/academic-task/delete/$taskId"),
     );
     return response.statusCode == 200;
   }
 
   static Future<Map<String, dynamic>?> generateAdaptivePlanForDate(int userId, String dateStr) async {
     final response = await http.get(
-      Uri.parse("http://10.0.2.2:8080/api/adaptive/plan/generate-by-date/$userId/$dateStr"),
+      Uri.parse("$baseUrl/api/adaptive/plan/generate-by-date/$userId/$dateStr"),
     );
     if (response.statusCode == 200 && response.body.isNotEmpty) {
       return jsonDecode(response.body);
@@ -285,21 +287,7 @@ class ApiService {
         return true;
       }
     } catch (_) {}
-
-    // Fallback if baseUrl was emulator but running on desktop/web or vice versa
-    try {
-      final fallbackUrl = baseUrl.contains("10.0.2.2")
-          ? "http://localhost:8080/api/feedback/submit"
-          : "http://10.0.2.2:8080/api/feedback/submit";
-      final response = await http.post(
-        Uri.parse(fallbackUrl),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(feedbackData),
-      );
-      return response.statusCode == 200 || response.statusCode == 201;
-    } catch (_) {
-      return false;
-    }
+    return false;
   }
 
   static Future<List<dynamic>> getUserFeedback(int userId) async {
@@ -312,31 +300,12 @@ class ApiService {
         if (decoded is List) return decoded;
       }
     } catch (_) {}
-
-    try {
-      final fallbackUrl = baseUrl.contains("10.0.2.2")
-          ? "http://localhost:8080/api/feedback/user/$userId"
-          : "http://10.0.2.2:8080/api/feedback/user/$userId";
-      final response = await http.get(Uri.parse(fallbackUrl));
-      if (response.statusCode == 200 && response.body.isNotEmpty) {
-        final decoded = jsonDecode(response.body);
-        if (decoded is List) return decoded;
-      }
-    } catch (_) {}
     return [];
   }
 
   // =========================
   // ACADEMIC SCHEDULE MODULE
   // =========================
-  static String get baseUrl {
-    try {
-      // Android emulator uses 10.0.2.2, desktop/web uses localhost
-      return "http://10.0.2.2:8080";
-    } catch (_) {
-      return "http://localhost:8080";
-    }
-  }
 
   static Future<Map<String, dynamic>> addAcademicSchedule(Map<String, dynamic> scheduleData) async {
     try {
